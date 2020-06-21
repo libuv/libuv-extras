@@ -11,6 +11,8 @@ jobs:
       - name: Envinfo
         run: npx envinfo
       - name: Build android
+        env:
+          ANDROID_NDK_HOME: $ANDROID_NDK
         run: |
-          ./gradlew assembleDebug
+          chmod +x gradlew && ./gradlew assembleDebug
 

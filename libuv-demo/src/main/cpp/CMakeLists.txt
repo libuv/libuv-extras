@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+project (native-lib)
+
 set(LIBUV_VERSION v1.38.0)
 
 include(ExternalProject)
@@ -37,4 +39,5 @@ link_directories(${BINARY_DIR})
 
 add_dependencies(native-lib libuv)
 
-target_link_libraries(native-lib ${log-lib} ${BINARY_DIR}/libuv_a.a)
+set(libuv_static ${BINARY_DIR}/libuv_a.a)
+target_link_libraries(native-lib ${log-lib} ${libuv_static})

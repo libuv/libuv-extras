@@ -3,9 +3,7 @@
 #include <uv.h>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_vivo_libuv_1android_1demo_MainActivity_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
+Java_com_example_libuv_1demo_MainActivity_stringFromJNI(JNIEnv *env, jobject thiz) {
     std::string hello = "Hello from Libuv";
 
     uv_cpu_info_t* cpus;
