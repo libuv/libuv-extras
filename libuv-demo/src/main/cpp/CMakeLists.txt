@@ -23,8 +23,6 @@ set(ANDROID_CMAKE_ARGS
 ExternalProject_Add(libuv
         GIT_REPOSITORY https://github.com/libuv/libuv.git
         INSTALL_COMMAND ""
-        # ninja hack
-        BUILD_BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}
         CMAKE_ARGS ${ANDROID_CMAKE_ARGS}
         GIT_TAG ${LIBUV_VERSION})
 
@@ -39,7 +37,7 @@ find_library( log-lib log )
 include_directories(${SOURCE_DIR}/include)
 link_directories(${BINARY_DIR})
 
-add_dependencies(native-lib libuv)
-
 set(libuv_static ${BINARY_DIR}/libuv_a.a)
 target_link_libraries(native-lib ${log-lib} ${libuv_static})
+
+add_dependencies(native-lib libuv)
