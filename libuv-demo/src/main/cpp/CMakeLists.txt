@@ -19,25 +19,31 @@ set(ANDROID_CMAKE_ARGS
         -DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -G${CMAKE_GENERATOR})
-
-ExternalProject_Add(libuv
+ExternalProject_Add(libuv_ext
         GIT_REPOSITORY https://github.com/libuv/libuv.git
         INSTALL_COMMAND ""
         CMAKE_ARGS ${ANDROID_CMAKE_ARGS}
+        BUILD_BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/libuv_ext-prefix/src/libuv_ext-build/libuv_a${CMAKE_STATIC_LIBRARY_SUFFIX}
         GIT_TAG ${LIBUV_VERSION})
 
-ExternalProject_Get_property(libuv SOURCE_DIR)
-ExternalProject_Get_property(libuv BINARY_DIR)
-message(WARNING "message: ${BINARY_DIR}")
+ExternalProject_Get_property(libuv_ext SOURCE_DIR)
+ExternalProject_Get_property(libuv_ext BINARY_DIR)
+MESSAGE(WARNING "${BUILD_BYPRODUCTS}")
+
+add_library(libuv STATIC IMPORTED GLOBAL)
+set_target_properties(libuv PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/libuv_ext-prefix/src/libuv_ext-build/libuv_a${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+add_dependencies(libuv libuv_ext)
+include_directories(${SOURCE_DIR}/include)
 
 add_library( native-lib SHARED native-lib.cpp )
+add_dependencies(native-lib libuv)
 
 find_library( log-lib log )
 
-include_directories(${SOURCE_DIR}/include)
 link_directories(${BINARY_DIR})
 
-set(libuv_static ${BINARY_DIR}/libuv_a.a)
-target_link_libraries(native-lib ${log-lib} ${libuv_static})
+target_link_libraries(native-lib ${log-lib} libuv)
 
-add_dependencies(native-lib libuv)
+
