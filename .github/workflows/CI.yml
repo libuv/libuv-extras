@@ -14,5 +14,5 @@ jobs:
         env:
           ANDROID_NDK_HOME: $ANDROID_NDK
         run: |
-          chmod +x gradlew && ./gradlew assembleDebug
+          cd android && chmod +x gradlew && ./gradlew assembleDebug
 

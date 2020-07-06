@@ -3,7 +3,7 @@
 build/
 .gradle
 *.log
-/local.properties
+/android/local.properties
 .DS_Store
 /captures
 .externalNativeBuild
